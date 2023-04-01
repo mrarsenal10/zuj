@@ -13,6 +13,8 @@ const dev = {
     },
 };
 
+const pro = {};
+
 const config = { dev, pro };
 
 const env = process.env.DEV_ENV || "dev";
