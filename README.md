@@ -23,7 +23,6 @@ DEV_DB_USERNAME=root
 DEV_DB_PASSWORD=123456
 ```
 
-
 **Step 2**
 
 ```bash
@@ -43,7 +42,7 @@ make build_application
 ```bash
 # development
 $ npm run start
-
+$ npx sequelize-cli db:migrate
 $ npx sequelize-cli db:seed:all                                                          
 ```
 
