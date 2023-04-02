@@ -54,14 +54,3 @@ $ npx sequelize-cli db:seed:all
 ```bash
 # unit tests
 $ npm run test
-
-
-
-
-
-
-
-
-
-
-
