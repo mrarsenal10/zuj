@@ -3,9 +3,10 @@ const { dateString, numericString } = require("./utils");
 
 const filterQuery = z.object({
     query: z.object({
-        limit: numericString(z.number().default(10)),
-        offset: numericString(z.number().default(1)),
-        date: dateString(z.date().optional()),
+        limit: numericString(z.number().optional()),
+        offset: numericString(z.number().optional()),
+        activeStart: dateString(z.date().optional()),
+        activeEnd: dateString(z.date().optional()),
     }),
 });
 

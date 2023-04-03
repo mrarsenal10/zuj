@@ -3,18 +3,9 @@ const swaggerUi = require("swagger-ui-express");
 
 const definition = {
     info: {
-        // API information (required)
-        title: "Wayfarer", // Title (required)
+        title: "Football livescore", // Title (required)
         version: "1.0.0", // Version (required)
     },
-    // securityDefinitions: {
-    //     bearerAuth: {
-    //         type: "apiKey",
-    //         name: "Authorization",
-    //         scheme: "bearer",
-    //         in: "header",
-    //     },
-    // },
 };
 
 const options = {

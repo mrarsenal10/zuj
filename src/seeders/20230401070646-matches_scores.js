@@ -2,16 +2,6 @@
 
 const { faker } = require("@faker-js/faker");
 
-const matchScores = [...Array(1000)].reduce((acc) => {
-    acc.push({
-        matchId: faker.datatype.number({ min: 1, max: 1000 }),
-        home_score: faker.datatype.number({ min: 1, max: 10 }),
-        away_score: faker.datatype.number({ min: 1, max: 10 }),
-    });
-
-    return acc;
-}, []);
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -25,6 +15,14 @@ module.exports = {
          * }], {});
          */
 
+        const matchScores = [...Array(361).keys()].map((key) => {
+            return {
+                matchId: key + 1,
+                home_score: faker.datatype.number({ min: 1, max: 10 }),
+                away_score: faker.datatype.number({ min: 1, max: 10 }),
+            };
+        });
+
         await queryInterface.bulkInsert("Matches_Scores", matchScores, {});
     },
 
@@ -35,5 +33,6 @@ module.exports = {
          * Example:
          * await queryInterface.bulkDelete('People', null, {});
          */
+        await queryInterface.bulkDelete('Matches_Scores', null, {});
     },
 };

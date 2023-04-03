@@ -8,6 +8,11 @@ const Team = require("#models/team.model");
 const { InternalServerError } = require("#core/error.response");
 
 class MatchService {
+    /**
+     * Transforming matches with its team and match scores
+     * @param {array} matches
+     * @returns array
+     */
     static transformMatches(matches) {
         let curDate = null;
 
@@ -19,17 +24,26 @@ class MatchService {
 
                 acc.push({
                     start_date,
+                    numMatches: 0,
                     matches: [],
                 });
             }
-
+            acc[acc.length - 1]['numMatches'] += 1;
             acc[acc.length - 1].matches.push({ ...rest });
 
             return acc;
         }, []);
     }
 
-    static getAll = async ({ limit = 10, offset = 1, date }) => {
+    /**
+     * Get all matches using pagination
+     * @param {int} limit
+     * @param {int} offset - The last matchID
+     * @param {string} activeStart
+     * @param {string} activeEnd
+     * @returns
+     */
+    static getAll = async ({ limit = 10, offset = 1, activeStart, activeEnd }) => {
         try {
             return await Match.findAll({
                 attributes: [
@@ -64,43 +78,39 @@ class MatchService {
                 ],
                 limit: parseInt(limit),
                 where: {
-                    matchId: {
-                        [sequelize.Op.gte]: parseInt(offset),
-                    },
-                    ...(date && {
-                        start_date: {
-                            [sequelize.Op.gte]: date,
+                    [sequelize.Op.and]: {
+                        [sequelize.Op.or]: {
+                            [sequelize.Op.and]: {
+                                ...(activeStart && {
+                                    start_date: {
+                                        [sequelize.Op.gte]: activeStart,
+                                    },
+                                }),
+                                ...(offset && {
+                                    matchId: {
+                                        [sequelize.Op.gt]: offset,
+                                    },
+                                }),
+                            },
+                            ...(activeStart && {
+                                start_date: {
+                                    [sequelize.Op.gt]: activeStart,
+                                },
+                            }),
                         },
-                    }),
+                        ...(activeEnd && {
+                            start_date: {
+                                [sequelize.Op.lte]: activeEnd,
+                            },
+                        }),
+                    },
                 },
-                order: [["start_date", "ASC"]],
+                order: [
+                    ["start_date", "ASC"],
+                    ["matchId", "ASC"],
+                ],
                 raw: true,
             }).then((matches) => this.transformMatches(matches));
-        } catch (error) {
-            throw new InternalServerError({ message: error.message });
-        }
-    };
-
-    static countMatchsByDateRange = async ({ activeStart, activeEnd }) => {
-        try {
-            const count = await Match.findAll({
-                attributes: [
-                    "start_date",
-                    [
-                        sequelize.fn("COUNT", sequelize.col("matchId")),
-                        "numMatches",
-                    ],
-                ],
-                where: {
-                    start_date: {
-                        [sequelize.Op.gte]: activeStart,
-                        [sequelize.Op.lte]: activeEnd,
-                    },
-                },
-                group: ["start_date"],
-            });
-
-            return count;
         } catch (error) {
             throw new InternalServerError({ message: error.message });
         }

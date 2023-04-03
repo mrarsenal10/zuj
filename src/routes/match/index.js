@@ -15,22 +15,31 @@ const { filterQuery } = require("#validation/match.scheme");
     *     description: Find all matches
     *     responses:
     *      200:
-    *        description: success
+    *        description: Successfully
     *      400:
     *        description: Response invalid parameters
     *     parameters:
     *       - in: query
     *         name: limit
+    *         description: The number of items to return
     *         schema:
     *           type: integer
     *           example: 10
     *       - in: query
     *         name: offset
+    *         description: The last matchID
     *         schema:
     *           type: integer
-    *           example: 1
+    *           example: 0
     *       - in: query
-    *         name: date
+    *         name: activeStart
+    *         description: The date that used to filter the items
+    *         schema:
+    *           type: string
+    *           example: '2023-01-01'
+    *       - in: query
+    *         name: activeEnd
+    *         description: The date that used to filter the items
     *         schema:
     *           type: string
     *           example: '2023-01-01'
