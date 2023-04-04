@@ -51,7 +51,11 @@ make build_application
 # development
 $ npm run start-dev
 $ npm run migrate
-$ npm run seed                                                          
+$ npm run seed
+```
+
+```Documentation API
+Swagger: http://localhost:3000/docs
 ```
 
 ## Test
