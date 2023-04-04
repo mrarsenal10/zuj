@@ -21,6 +21,13 @@ DEV_DB_PORT=
 DEV_DB_NAME=
 DEV_DB_USERNAME=
 DEV_DB_PASSWORD=
+
+TEST_APP_PORT=
+TEST_DB_HOST=
+TEST_DB_PORT=
+TEST_DB_NAME=
+TEST_DB_USERNAME=
+TEST_DB_PASSWORD=
 ```
 *Note*: This file should **NEVER** been committed to source control, because it contains sensitive information
 
