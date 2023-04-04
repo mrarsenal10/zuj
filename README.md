@@ -15,13 +15,14 @@ After you clone the repo, please creating `.env` file in the root folder
 
 Copy and paste:
 ```
-DEV_APP_PORT=3000
-DEV_DB_HOST=127.0.0.1
-DEV_DB_PORT=33060
-DEV_DB_NAME=football_dev
-DEV_DB_USERNAME=root
-DEV_DB_PASSWORD=123456
+DEV_APP_PORT=
+DEV_DB_HOST=
+DEV_DB_PORT=
+DEV_DB_NAME=
+DEV_DB_USERNAME=
+DEV_DB_PASSWORD=
 ```
+*Note*: This file should **NEVER** been committed to source control, because it contains sensitive information
 
 **Step 2**
 
