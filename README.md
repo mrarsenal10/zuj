@@ -41,14 +41,12 @@ make build_application
 
 ```bash
 # development
-$ npm run start
-$ npx sequelize-cli db:migrate
-$ npx sequelize-cli db:seed:all                                                          
+$ npm run start-dev
+$ npm run migrate
+$ npm run seed                                                          
 ```
 
 ## Test
-
-**Note:** we don't have any tests for now. If you like to contribute for tests, please go ahead and create ticket!
 
 ```bash
 # unit tests
