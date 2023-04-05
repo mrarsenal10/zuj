@@ -28,7 +28,7 @@ class MatchService {
                     matches: [],
                 });
             }
-            acc[acc.length - 1]['numMatches'] += 1;
+            acc[acc.length - 1]["numMatches"] += 1;
             acc[acc.length - 1].matches.push({ ...rest });
 
             return acc;
@@ -43,14 +43,21 @@ class MatchService {
      * @param {string} activeEnd
      * @returns
      */
-    static getAll = async ({ limit = 10, offset = 1, activeStart, activeEnd }) => {
+    static getAll = async ({
+        limit = 10,
+        offset = 1,
+        activeStart,
+        activeEnd,
+    }) => {
         try {
             return await Match.findAll({
                 attributes: [
                     [sequelize.col("Matches_Score.home_score"), "home_score"],
                     [sequelize.col("Matches_Score.away_score"), "away_score"],
                     [sequelize.col("home.name"), "home_team"],
+                    [sequelize.col("home.logo"), "home_logo"],
                     [sequelize.col("away.name"), "away_team"],
+                    [sequelize.col("away.logo"), "away_logo"],
                     "matchId",
                     "start_date",
                     "start_time",

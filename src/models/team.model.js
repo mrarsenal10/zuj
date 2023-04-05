@@ -14,6 +14,10 @@ const Team = sequelize.define(
             type: Sequelize.DataTypes.STRING,
             allowNull: false,
         },
+        logo: {
+            type: Sequelize.DataTypes.STRING,
+            allowNull: true,
+        },
     },
     {
         timestamps: false,

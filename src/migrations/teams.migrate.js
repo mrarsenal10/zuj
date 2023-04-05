@@ -12,6 +12,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+            logo: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            }
         });
     },
     down: async (queryInterface, Sequelize) => {
