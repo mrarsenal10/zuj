@@ -116,6 +116,8 @@ describe("Matches API", () => {
                 "away_score",
                 "home_team",
                 "away_team",
+                "home_logo",
+                "away_logo",
                 "matchId",
                 "start_date",
                 "start_time",
