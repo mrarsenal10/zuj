@@ -8,6 +8,7 @@ This is repo running with NodeJS
 
 - node >= 16.19
 - docker >= 3.8
+- docker-compose: >= 1.29
 - npm => 8.19
 
 **Step 1:**
