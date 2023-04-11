@@ -33,7 +33,6 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
     const code = error.code || 500;
-    console.log(error);
     const errors = error.errors || [];
 
     return res.status(code).send({

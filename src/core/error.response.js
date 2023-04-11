@@ -30,15 +30,6 @@ class BadRequestError extends ErrorResponse {
     }
 }
 
-class ForbiddenError extends ErrorResponse {
-    constructor({
-        code = STATUS_CODE.FORBIDDEN,
-        message = STATUS_MESSAGE.FORBIDDEN,
-    }) {
-        super({ code, message });
-    }
-}
-
 class InternalServerError extends ErrorResponse {
     constructor({
         code = STATUS_CODE.INTERNAL_SERVER_ERROR,
@@ -50,6 +41,5 @@ class InternalServerError extends ErrorResponse {
 
 module.exports = {
     BadRequestError,
-    ForbiddenError,
     InternalServerError,
 };

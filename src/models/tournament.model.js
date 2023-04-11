@@ -1,10 +1,10 @@
 const sequelize = require("#dbs/mysql");
 const { Sequelize } = sequelize;
 
-const Team = sequelize.define(
-    "Teams",
+const Tournament = sequelize.define(
+    "Tournaments",
     {
-        teamId: {
+        tournamentId: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.DataTypes.INTEGER,
@@ -23,4 +23,4 @@ const Team = sequelize.define(
     }
 );
 
-module.exports = Team;
+module.exports = Tournament;
