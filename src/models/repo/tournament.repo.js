@@ -17,7 +17,7 @@ class TournamentRepo {
                 where: {
                     ...(tournamentId && {
                         tournamentId: {
-                            [sequelize.Op.in]: [tournamentId],
+                            [sequelize.Op.in]: tournamentId,
                         },
                     }),
                 },
