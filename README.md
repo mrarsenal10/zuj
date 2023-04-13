@@ -33,24 +33,18 @@ TEST_DB_PASSWORD=
 *Note*: This file should **NEVER** been committed to source control, because it contains sensitive information
 
 **Step 2**
-
-```bash
-npm install
-```
-
 <h3>Database</h3>
 
 Note: We are using MySQL as our storage database. In order to run MySQL, you will need to download Docker. Then, run the following command:
 
-```bash
-make build_application
-```
-
 ## Running the app
 
 ```bash
+make build_application
+
 # development
-$ npm run start-dev
+$ npm install
+$ npm run start:dev
 $ npm run migrate
 $ npm run seed
 ```
@@ -65,3 +59,5 @@ Swagger: http://localhost:3000/docs
 ```bash
 # unit tests
 $ npm run test
+
+$ npm run test:coverage
