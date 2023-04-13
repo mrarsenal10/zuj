@@ -14,6 +14,17 @@ class MatchController {
             metadata: await MatchService.getAll(req.query),
         }).send(res);
     };
+
+    /**
+     * Count match by specified date range
+     * @param {Object} req
+     * @param {Object} res
+     */
+    countMatch = async (req, res) => {
+        new OK({
+            metadata: await MatchService.countMatch(req.query)
+        }).send(res)
+    }
 }
 
 module.exports = new MatchController();

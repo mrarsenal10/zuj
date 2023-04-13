@@ -2,23 +2,23 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable("Teams", {
-            teamId: {
+        await queryInterface.createTable("Tournaments", {
+            tournamentId: {
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            name: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
             logo: {
-                type: Sequelize.STRING,
                 allowNull: false,
-            }
+                type: Sequelize.STRING,
+            },
+            name: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable("Teams");
+        await queryInterface.dropTable("Tournaments");
     },
 };

@@ -19,6 +19,9 @@ module.exports = {
         const awayIds = [...Array(20).keys()];
 
         const matches = [];
+        let roundId = null;
+
+        const prev = {};
 
         for (let homeId of homeIds) {
             for (let awayId of awayIds) {
@@ -26,23 +29,29 @@ module.exports = {
                     continue;
                 }
 
+                while (1) {
+                    roundId = faker.datatype.number({ min: 1, max: 38 });
+                    if (
+                        !prev[roundId] ||
+                        (prev[roundId][0] !== homeId &&
+                            prev[roundId][1] !== awayId)
+                    ) {
+                        break;
+                    }
+                }
+
                 matches.push({
+                    roundId,
                     homeId: homeId + 1,
                     awayId: awayId + 1,
-                    start_date: new Date(
-                        faker.date.between("2023-01-01", "2023-12-31")
-                    )
-                        .toISOString()
-                        .split("T")[0],
-                    start_time: new Date(faker.date.recent())
-                        .toTimeString()
-                        .slice(0, 8),
                     status: faker.helpers.arrayElement([
                         "full_time",
                         "half_time",
                     ]),
                     is_live: faker.datatype.number({ min: 0, max: 1 }),
                 });
+
+                prev[roundId] = [homeId, awayId];
             }
         }
 

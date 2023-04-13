@@ -8,6 +8,10 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
+            roundId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
             homeId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -15,14 +19,6 @@ module.exports = {
             awayId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-            },
-            start_date: {
-                allowNull: false,
-                type: Sequelize.DATE,
-            },
-            start_time: {
-                allowNull: false,
-                type: Sequelize.TIME,
             },
             status: {
                 allowNull: true,
@@ -34,7 +30,7 @@ module.exports = {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false,
             },
-        }).then(() => queryInterface.addIndex("Matches", ["start_date"]));
+        });
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable("Matches");

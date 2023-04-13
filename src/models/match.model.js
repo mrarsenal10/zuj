@@ -2,6 +2,7 @@ const sequelize = require("#dbs/mysql");
 const { Sequelize } = sequelize;
 
 const Match_Score = require("./match_score.model");
+const Round = require("./round.model");
 const Team = require("./team.model");
 
 const Match = sequelize.define(
@@ -12,29 +13,17 @@ const Match = sequelize.define(
             primaryKey: true,
             type: Sequelize.DataTypes.INTEGER,
         },
+        roundId: {
+            type: Sequelize.DataTypes.INTEGER,
+            allowNull: false,
+        },
         homeId: {
             type: Sequelize.DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: Team,
-                key: "teamId",
-            },
         },
         awayId: {
             type: Sequelize.DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: Team,
-                key: "teamId",
-            },
-        },
-        start_date: {
-            allowNull: false,
-            type: Sequelize.DataTypes.DATEONLY,
-        },
-        start_time: {
-            allowNull: false,
-            type: Sequelize.DataTypes.TIME,
         },
         status: {
             allowNull: true,
@@ -57,14 +46,19 @@ Match.hasOne(Match_Score, {
     targetKey: "matchId",
 });
 Match.belongsTo(Team, {
-    foreignKey: 'awayId',
-    targetKey: 'teamId',
-    as: 'away'
-})
+    foreignKey: "awayId",
+    targetKey: "teamId",
+    as: "away",
+});
 Match.belongsTo(Team, {
-    foreignKey: 'homeId',
-    targetKey: 'teamId',
-    as: 'home'
-})
+    foreignKey: "homeId",
+    targetKey: "teamId",
+    as: "home",
+});
+Match.belongsTo(Round, {
+    foreignKey: "roundId",
+    targetKey: "roundId",
+    as: "round",
+});
 
 module.exports = Match;

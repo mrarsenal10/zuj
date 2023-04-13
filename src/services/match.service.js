@@ -1,22 +1,23 @@
 "use strict";
 
-const sequelize = require("sequelize");
-
-const Match = require("#models/match.model");
-const Match_Score = require("#models/match_score.model");
-const Team = require("#models/team.model");
-const { InternalServerError } = require("#core/error.response");
+const MatchRepo = require("../models/repo/match.repo");
+const TournamentRepo = require("../models/repo/tournament.repo");
 
 class MatchService {
     /**
-     * Transforming matches with its team and match scores
+     * Group the matches by date
+     * @param {string} id
      * @param {array} matches
      * @returns array
      */
-    static transformMatches(matches) {
+    static groupMatchesByDate(id, matches) {
         let curDate = null;
 
-        return matches.reduce((acc, { start_date, ...rest }) => {
+        return matches.reduce((acc, { start_date, tournamentId, ...rest }) => {
+            if (id !== tournamentId) {
+                return acc;
+            }
+
             const startDate = new Date(start_date).getTime();
 
             if (curDate === null || curDate !== startDate) {
@@ -36,91 +37,43 @@ class MatchService {
     }
 
     /**
+     * Get matches that grouped by tournament
+     * @param {array} matches
+     * @returns array
+     */
+    static makeTournamentMatches(tournaments, matches) {
+        return tournaments.map(
+            ({
+                tournamentId,
+                name: tournament_name,
+                logo: tournament_logo,
+            }) => ({
+                tournament_name,
+                tournament_logo,
+                round: this.groupMatchesByDate(tournamentId, matches),
+            })
+        );
+    }
+
+    /**
      * Get all matches using pagination
-     * @param {int} limit
-     * @param {int} offset - The last matchID
-     * @param {string} activeStart
-     * @param {string} activeEnd
+     * @param {Request.body} body
      * @returns
      */
-    static getAll = async ({
-        limit = 10,
-        offset = 1,
-        activeStart,
-        activeEnd,
-    }) => {
-        try {
-            return await Match.findAll({
-                attributes: [
-                    [sequelize.col("Matches_Score.home_score"), "home_score"],
-                    [sequelize.col("Matches_Score.away_score"), "away_score"],
-                    [sequelize.col("home.name"), "home_team"],
-                    [sequelize.col("home.logo"), "home_logo"],
-                    [sequelize.col("away.name"), "away_team"],
-                    [sequelize.col("away.logo"), "away_logo"],
-                    "matchId",
-                    "start_date",
-                    "start_time",
-                    "status",
-                    "is_live",
-                ],
-                include: [
-                    {
-                        model: Team,
-                        as: "home",
-                        required: false,
-                        attributes: [],
-                    },
-                    {
-                        model: Team,
-                        as: "away",
-                        required: false,
-                        attributes: [],
-                    },
-                    {
-                        model: Match_Score,
-                        required: false,
-                        attributes: [],
-                    },
-                ],
-                limit: parseInt(limit),
-                where: {
-                    [sequelize.Op.and]: {
-                        [sequelize.Op.or]: {
-                            [sequelize.Op.and]: {
-                                ...(activeStart && {
-                                    start_date: {
-                                        [sequelize.Op.gte]: activeStart,
-                                    },
-                                }),
-                                ...(offset && {
-                                    matchId: {
-                                        [sequelize.Op.gt]: offset,
-                                    },
-                                }),
-                            },
-                            ...(activeStart && {
-                                start_date: {
-                                    [sequelize.Op.gt]: activeStart,
-                                },
-                            }),
-                        },
-                        ...(activeEnd && {
-                            start_date: {
-                                [sequelize.Op.lte]: activeEnd,
-                            },
-                        }),
-                    },
-                },
-                order: [
-                    ["start_date", "ASC"],
-                    ["matchId", "ASC"],
-                ],
-                raw: true,
-            }).then((matches) => this.transformMatches(matches));
-        } catch (error) {
-            throw new InternalServerError({ message: error.message });
-        }
+    static getAll = async (body) => {
+        const matches = await MatchRepo.getMatchesWithDetail(body);
+        const tournaments = await TournamentRepo.getAll(body);
+
+        return this.makeTournamentMatches(tournaments, matches);
+    };
+
+    /**
+     * Count match by specified date range
+     * @param {Request.body} body
+     * @returns
+     */
+    static countMatch = async (body) => {
+        return await MatchRepo.countMatchByDateRange(body);
     };
 }
 
