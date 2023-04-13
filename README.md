@@ -47,6 +47,11 @@ $ npm install
 $ npm run start:dev
 $ npm run migrate
 $ npm run seed
+
+*Note*:
+If you have error with database, please executing these lines to migrate and seed your database again.
+$ npm run migrate:reset
+$ npm run seed:reset
 ```
 
 ## Documentation API
@@ -61,3 +66,4 @@ Swagger: http://localhost:3000/docs
 $ npm run test
 
 $ npm run test:coverage
+
